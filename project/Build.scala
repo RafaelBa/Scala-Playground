@@ -29,7 +29,7 @@ object Learn extends Build {
       "com.typesafe.slick" %% "slick" % "2.1.0",
       "io.argonaut" %% "argonaut" % "6.1-M4" // TODO add spray and akka
     )
-  ) // TODO .enablePlugins(PlayScala)
+  ).enablePlugins(play.PlayScala)
 
   lazy val testing = (project in (subprojects / "testing")).settings(commonSettings: _*).settings(
     libraryDependencies ++= Seq( // TODO add scalacheck and scalatest
