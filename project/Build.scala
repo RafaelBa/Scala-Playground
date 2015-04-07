@@ -1,6 +1,8 @@
 import sbt._
 import Keys._
 
+import play._
+
 object Learn extends Build {
   override lazy val settings = super.settings ++ Seq(
     name := "LearningScala",
@@ -17,7 +19,7 @@ object Learn extends Build {
   lazy val commonSettings = Seq(libraryDependencies := Seq("org.specs2" %% "specs2-core" % "3.0.1" % "test"))
 
 
-  lazy val root = (project in file(".")).aggregate(base, network, testing)
+  lazy val learningscala = (project in file(".")).aggregate(base, network, testing)
   lazy val base = (project in (subprojects / "base")).settings(commonSettings: _*).settings(
     libraryDependencies ++= Seq(
       "org.scalaz" %% "scalaz-core" % "7.1.1"
@@ -29,7 +31,7 @@ object Learn extends Build {
       "com.typesafe.slick" %% "slick" % "2.1.0",
       "io.argonaut" %% "argonaut" % "6.1-M4" // TODO add spray and akka
     )
-  ).enablePlugins(play.PlayScala)
+  ).enablePlugins(PlayScala)
 
   lazy val testing = (project in (subprojects / "testing")).settings(commonSettings: _*).settings(
     libraryDependencies ++= Seq( // TODO add scalacheck and scalatest
