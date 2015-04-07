@@ -16,7 +16,10 @@ object Learn extends Build {
     scalacOptions in Test := Seq("-Yrangepos")
   )
 
-  lazy val commonSettings = Seq(libraryDependencies := Seq("org.specs2" %% "specs2-core" % "3.0.1" % "test"))
+  lazy val commonSettings = Seq(
+    libraryDependencies := Seq("org.specs2" %% "specs2-core" % "3.0.1" % "test"),
+    ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true)}
+  )
 
 
   lazy val learningscala = (project in file(".")).aggregate(base, network, testing)
@@ -26,11 +29,15 @@ object Learn extends Build {
     )
   )
 
-  lazy val network = (project in (subprojects / "network")).settings(commonSettings: _*).settings(
+  /**
+   * Note that the appending of the default project settings for Play projects is important because the settings set by enablePlugins are overridden.
+   */
+  lazy val network = (project in (subprojects / "network")).settings((commonSettings ++ play.Play.projectSettings): _*).settings(
     libraryDependencies ++= Seq(
       "com.typesafe.slick" %% "slick" % "2.1.0",
-      "io.argonaut" %% "argonaut" % "6.1-M4" // TODO add spray and akka
-    )
+      "io.argonaut" %% "argonaut" % "6.1-M4"
+    ) // TODO add spray and akka
+
   ).enablePlugins(PlayScala)
 
   lazy val testing = (project in (subprojects / "testing")).settings(commonSettings: _*).settings(
