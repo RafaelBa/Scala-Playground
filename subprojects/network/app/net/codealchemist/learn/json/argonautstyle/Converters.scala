@@ -1,5 +1,5 @@
 package net.codealchemist.learn.json
-package argonautcodecs
+package argonautstyle
 
 import argonaut._
 import Argonaut._
