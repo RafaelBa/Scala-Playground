@@ -32,6 +32,7 @@ class ArgonautCodecSpec extends Specification { def is =
 
   And a little proof that all codecs decode as they encode                     $codecs
 """
+
   def e1 = cocktailToJson(caipi) should beEqualTo(caipiJson)
   def e2 = jsonToCocktail(caipiJson) should beEqualTo(\/-(caipi))
   def e3 = jsonToCocktail(erronousCocktailJson) should beEqualTo(
@@ -57,9 +58,9 @@ class ArgonautCodecSpec extends Specification { def is =
     jsonToDrink(drinkToJson(beer)) should beRight(beer) and(
       jsonToDrink(drinkToJson(wine)) should beRight(wine) and(
         jsonToWhisky(whiskyToJson(ardbeg)) should beSome(ardbeg)
-        )
       )
     )
+  )
 
   lazy val caipi = Cocktail("Caipirinha", List(Ingredient("cane sugar"), Ingredient("cachaca"), Ingredient("lime"))) 
   lazy val caipiJson = """{"name":"Caipirinha","ingredients":[{"ingredient":"cane sugar"},{"ingredient":"cachaca"},{"ingredient":"lime"}]}"""
