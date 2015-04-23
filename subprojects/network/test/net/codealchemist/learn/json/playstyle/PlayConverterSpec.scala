@@ -10,11 +10,11 @@ class PlayConverterSpec extends Specification { def is =
 "Play Json Lib".title ^ s2"""
   Play provides a functional like library to convert objects into JSON and vice versa.
 
-  Cocktails
-    Encoding                              $e1
-    Decoder
-      was successful                      $e2
-      throws Exception                    $e3
+  The converters work similiar for reading and writing. But if there is only one object which should be converted it will get a little bit complicated.
+    Conversion to JSON is straigth forward                         $e1
+    Conversion from JSON will
+      yield the object if successfull                              $e2
+      throw and Exception if it was not successfull                $e3
 
   Trait Drink
     Encoding bot subclasses               $e4
