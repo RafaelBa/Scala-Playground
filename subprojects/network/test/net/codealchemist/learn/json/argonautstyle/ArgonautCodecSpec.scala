@@ -6,6 +6,9 @@ import org.specs2.Specification
 import Conversions._
 import Drinks._
 
+import argonaut.{CursorOpDownField, CursorOpField, CursorOp, CursorHistory}
+import scalaz.{-\/, \/-}
+
 class ArgonautCodecSpec extends Specification { def is =
 "Argonaut".title ^ s2"""
   Argonaut proiveds different ways to transform JSONs into objects and vice versa using a functional approach.
@@ -30,23 +33,33 @@ class ArgonautCodecSpec extends Specification { def is =
 
   And a little proof that all codecs decode as they encode                     $codecs
 """
+
   def e1 = cocktailToJson(caipi) should beEqualTo(caipiJson)
-  def e2 = jsonToCocktail(caipiJson) should beRight(caipi)
-  def e3 = jsonToCocktail(erronousCocktailJson) should beLeft("???")
+  def e2 = jsonToCocktail(caipiJson) should beEqualTo(\/-(caipi))
+  def e3 = jsonToCocktail(erronousCocktailJson) should beEqualTo(
+    -\/(\/-(
+      ("Attempt to decode value on failed cursor.",
+        CursorHistory(List(
+          CursorOp.failedOp(CursorOpDownField("ingredients"))
+        ))
+      )
+    )))
 
   def e4 = drinkToJson(beer) should beEqualTo(beerJson) and( drinkToJson(wine) should beEqualTo(wineJson) )
   def e5 = jsonToDrink(beerJson) should beRight(beer) and( jsonToDrink(wineJson) should beRight(wine))
-  def e6 = jsonToDrink(erronousDrinkJson) should beLeft("???")
+  def e6 = {
+    jsonToDrink(erronousDrinkJson) should beLeft("Attempt to decode value on failed cursor.: [*.--\\(kindOfWine)]")
+  }
 
   def e7 = whiskyToJson(ardbeg) should beEqualTo(ardbegJson)
   def e8 = jsonToWhisky(ardbegJson) should beSome(ardbeg)
   def e9 = jsonToWhisky(erronousWhiskyJson) should beNone
 
-  def codecs = jsonToCocktail(cocktailToJson(caipi)) should beRight(caipi) and(
+  def codecs = jsonToCocktail(cocktailToJson(caipi)) should beEqualTo(\/-(caipi)) and(
     jsonToDrink(drinkToJson(beer)) should beRight(beer) and(
       jsonToDrink(drinkToJson(wine)) should beRight(wine) and(
         jsonToWhisky(whiskyToJson(ardbeg)) should beSome(ardbeg)
-        )
       )
     )
+  )
 }

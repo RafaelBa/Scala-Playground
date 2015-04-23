@@ -61,7 +61,7 @@ object Converters {
     (JsPath \ "taste" \ "finish").write[String]
     )(unlift(pourWhisky))
 
-  private val pourWhisky = (w: Whisky) => Some((w.name, w.taste.body, w.taste.finish))
+  private lazy val pourWhisky = (w: Whisky) => Some((w.name, w.taste.body, w.taste.finish))
 
   implicit val whiskyReader: Reads[Whisky] = (
     (JsPath \ "name").read[String] and
@@ -69,5 +69,5 @@ object Converters {
     (JsPath \ "taste" \ "finish").read[String]
     )(fillWhisky)
 
-  private val fillWhisky = (name: String, body: String, finish: String) => Whisky(name, Taste(body, finish))
+  private lazy val fillWhisky = (name: String, body: String, finish: String) => Whisky(name, Taste(body, finish))
 }
