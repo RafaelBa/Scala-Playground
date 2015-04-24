@@ -23,23 +23,23 @@ object Converters {
     )(Cocktail)
 
   implicit val beerWriter: Writes[Beer] = (
-    (JsPath \ "beerName").write[String] and
-    (JsPath \ "kind").write[String]
+    (JsPath \ "name").write[String] and
+    (JsPath \ "kindOfBeer").write[String]
     )(unlift(Beer.unapply))
 
   implicit val beerReader: Reads[Beer] = (
-    (JsPath \ "beerName").read[String] and
-    (JsPath \ "kind").read[String]
+    (JsPath \ "name").read[String] and
+    (JsPath \ "kindOfBeer").read[String]
     )(Beer)
 
   implicit val wineWriter: Writes[Wine] = (
-    (JsPath \ "wineName").write[String] and
-    (JsPath \ "kind").write[String]
+    (JsPath \ "name").write[String] and
+    (JsPath \ "kindOfWine").write[String]
     )(unlift(Wine.unapply))
 
   implicit val wineReader: Reads[Wine] = (
-    (JsPath \ "wineName").read[String] and
-    (JsPath \ "kind").read[String]
+    (JsPath \ "name").read[String] and
+    (JsPath \ "kindOfWine").read[String]
     )(Wine)
 
   implicit val drinkWriter: Writes[Drink] = new Writes[Drink] {
@@ -49,11 +49,7 @@ object Converters {
     }
   }
 
-  implicit val drinkReader: Reads[Drink] = try {
-    JsPath.read[Beer].map((d: Drink) => d)
-  } catch {
-    case NonFatal(e) => JsPath.read[Wine].map((d: Drink) => d)
-  }
+  implicit val drinkReader: Reads[Drink] = JsPath.read[Beer].map((d: Drink) => d) | JsPath.read[Wine].map((d: Drink) => d)
 
   implicit val whiskyWriter: Writes[Whisky] = (
     (JsPath \ "name").write[String] and

@@ -2,6 +2,7 @@ package net.codealchemist.learn.json
 package playstyle
 
 import org.specs2.Specification
+import play.api.libs.json.JsResultException
 
 import net.codealchemist.learn.json.playstyle.Conversions._
 import Drinks._
@@ -17,7 +18,7 @@ class PlayConverterSpec extends Specification { def is =
       throw and Exception if it was not successfull                $e3
 
   Trait Drink
-    Encoding bot subclasses               $e4
+    Encoding both subclasses              $e4
     Decoding both subclasses
       Some(drink)                         $e5
       None                                $e6
@@ -33,7 +34,7 @@ class PlayConverterSpec extends Specification { def is =
 
   def e1 = cocktailToJson(caipi) should beEqualTo(caipiJson)
   def e2 = jsonToCocktail(caipiJson) should beEqualTo(caipi)
-  def e3 = jsonToCocktail(erronousCocktailJson) should throwA[ClassCastException]
+  def e3 = jsonToCocktail(erronousCocktailJson) should throwA[JsResultException]
 
   def e4 = drinkToJson(beer) should beEqualTo(beerJson) and (
     drinkToJson(wine) should beEqualTo(wineJson) )
@@ -43,7 +44,7 @@ class PlayConverterSpec extends Specification { def is =
 
   def e7 = whiskyToJson(ardbeg) should beEqualTo(ardbegJson)
   def e8 = jsonToWhisky(ardbegJson) should beRight(ardbeg)
-  def e9 = jsonToWhisky(erronousWhiskyJson) should beLeft(typedEqualExpectation(classOf[ClassCastException]))
+  def e9 = jsonToWhisky(erronousWhiskyJson).left.map(_.getClass) should beLeft(classOf[JsResultException])  // TODO this can be done like beLeft(beTypedEqualTo(exc))
 
   def codecs = jsonToCocktail(cocktailToJson(caipi)) should beEqualTo(caipi) and(
     jsonToDrink(drinkToJson(beer)) should beSome(beer) and(

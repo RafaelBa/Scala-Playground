@@ -1,13 +1,13 @@
 package net.codealchemist.learn.json
 package argonautstyle
 
+
+import argonaut.{CursorOpDownField, CursorOp, CursorHistory}
 import org.specs2.Specification
+import scalaz.{-\/, \/-}
 
 import Conversions._
 import Drinks._
-
-import argonaut.{CursorOpDownField, CursorOpField, CursorOp, CursorHistory}
-import scalaz.{-\/, \/-}
 
 class ArgonautCodecSpec extends Specification { def is =
 "Argonaut".title ^ s2"""
