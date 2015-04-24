@@ -17,17 +17,17 @@ class PlayConverterSpec extends Specification { def is =
       yield the object if successfull                              $e2
       throw and Exception if it was not successfull                $e3
 
-  Trait Drink
-    Encoding both subclasses              $e4
-    Decoding both subclasses
-      Some(drink)                         $e5
-      None                                $e6
+  A trait can here be encoded and decoded as well, again, the JSONs have not to be ambigious.
+    Encoding both subclasses will result in each one object of the trait             $e4
+    Decoding both subclasses will and getting the result as option will yield
+      Some(drink) for a success                                    $e5
+      None for a failure                                           $e6
 
-  Whisky, manual step down
-    Encoding                              $e7
-    Decoding
-      Right(whisky)                       $e8
-      Left(exc)                           $e9
+  You also can step down with the syntax manually, which works fine.
+    Encoding will yield a JSON again                               $e7
+    Decoding is here wrapped around by a Either, which will yield a
+      Right(whisky) for a success                                  $e8
+      Left(exc) for a failure                                      $e9
 
   And a little proof that all codecs decode as they encode        $codecs
 """
