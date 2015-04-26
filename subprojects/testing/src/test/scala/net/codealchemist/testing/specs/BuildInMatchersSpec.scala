@@ -1,5 +1,6 @@
 package net.codealchemist.testing.specs
 
+import scala.util.Try
 import org.specs2.Specification
 
 class BuildInMatchersSpec extends Specification { def is = "Specs2 Matchers".title ^ s2"""
@@ -23,32 +24,21 @@ Specs2 comes with some ready to use matchers, and this here shows how to actuall
       Right                      $rightVal
 
   Matchers for Exceptions let you see if
-    an Exception of the right type is thrown                      $e11
+    an Exception of the right type is thrown                      $excType
+    an Exception with a message has been thrown                   $excMsg
     a Try returns a
-     Success with a specific value                                $e12
-     Failure with a specific value                                $e13
+     Success with a specific value                                $trySuccess
+     Failure with a specific value                                $tryFail
 
   Map Matchers let you test for
-    Keys                                                          $e14
-    Values                                                        $e15
-    Pairs                                                         $e16
-
-  Some Matchers can be used on every Object, just like the beEqualTo, for example the
-    beLike                       $e17
-    beOneOf                      $e18
-    beNull                       $e19
-
-  Don't forget, that you can use Matchers inside other Matchers most of the time like in the
-    beSome                       $e20
-    beRight                      $e21
-    haveKeys                     $e22
-    haveValues                   $e23
-    exactly                      $e24
-    not                          $e25
+    Keys                                                          $mapKeys
+    Values                                                        $mapVals
+    Pairs                                                         $mapPairs
 
   Special Matchers for Lists can process them by looking if the List
     has a specific size                                           ${L.size}
     contains some elements                                        ${L.allOf}
+    contains some elements of a other List                        ${L.oneOf}
     contains exactly these elements, no more, no less             ${L.exact}
     contains these elements in given order                        ${L.order}
     does not contain these elements                               ${L.notContain}
@@ -79,27 +69,29 @@ Specs2 comes with some ready to use matchers, and this here shows how to actuall
   def leftVal = Left(42) should beLeft(42)
   def rightVal = Right("fourty-two") should beRight("fourty-two")
 
-  def e11 = failure
-  def e12 = failure
-  def e13 = failure
-  def e14 = failure
-  def e15 = failure
-  def e16 = failure
-  def e17 = failure
-  def e18 = failure
-  def e19 = failure
+  def excType = { throw new IllegalArgumentException; 1 } should throwA[IllegalArgumentException]
+  def excMsg = { throw new IllegalArgumentException("OBJECTION!"); 1 } should throwA[IllegalArgumentException]("OBJECTION!")
+  def trySuccess = Try("Success") should beSuccessfulTry.withValue("Success")
+  def tryFail = Try(throw new IllegalArgumentException("OBJECTION!")) should beFailedTry.withThrowable[IllegalArgumentException]("OBJECTION!")
+
+  lazy val m = Map(1 -> "one", 2 -> "two")
+  def mapKeys = m should haveKeys(2, 1)
+  def mapVals = m should haveValues("two", "one")
+  def mapPairs = m should havePairs(1 -> "one")
+
   def e20 = failure
   def e21 = failure
   def e22 = failure
   def e23 = failure
-  def e24 = failure
-  def e25 = failure
+  def notPred = 42 should not(beGreaterThan(1337))
+  def oneOf = 42 should beOneOf(17, 42, 1337)
 
   object L {
     lazy val l = List(2, 3, 4)
     
     def size = l should have size(3)
     def allOf = l should contain(4, 3)
+    def oneOf = l should contain(beOneOf(2, 3, 4, 5)).forall
     def exact = List(1, 1, 2, 3, 4) should contain(exactly(1, 1, 4, 3, 2))
     def order = l should contain(3, 4).inOrder
     def notContain = l should not(contain(1, 5))
