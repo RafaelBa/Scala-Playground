@@ -17,7 +17,7 @@ object Learn extends Build {
   )
 
   lazy val commonSettings = Seq(
-    libraryDependencies := Seq("org.specs2" %% "specs2-core" % "3.0.1" % "test"),
+    libraryDependencies := Seq("org.specs2" %% "specs2-core" % "3.5" % "test"),
     ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true)}
   )
 
