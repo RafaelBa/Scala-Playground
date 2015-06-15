@@ -17,7 +17,7 @@ object Learn extends Build {
   )
 
   lazy val commonSettings = Seq(
-    libraryDependencies := Seq("org.specs2" %% "specs2-core" % "3.5" % "test"),
+    libraryDependencies := Seq("org.specs2" %% "specs2-core" % "3.6" % "test"),
     ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true)}
   )
 
@@ -43,7 +43,7 @@ object Learn extends Build {
   lazy val testing = (project in (subprojects / "testing")).settings(commonSettings: _*).settings(
     libraryDependencies ++= Seq( // TODO add scalacheck and scalatest
     )
-  ) //.dependsOn(shared)
+  ) //.dependsOn(shared)   // TODO activate HTML output https://etorreborre.github.io/specs2/guide/SPECS2-3.5/org.specs2.guide.HtmlOutput.html
 
   // lazy val shared = (project in (subprojects / "shared"))
 
