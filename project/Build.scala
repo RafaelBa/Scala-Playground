@@ -16,8 +16,9 @@ object Learn extends Build {
     scalacOptions in Test := Seq("-Yrangepos")
   )
 
+  lazy val specsVersion = "3.6"
   lazy val commonSettings = Seq(
-    libraryDependencies := Seq("org.specs2" %% "specs2-core" % "3.0.1" % "test"),
+    libraryDependencies := Seq("org.specs2" %% "specs2-core" % specsVersion % "test"),
     ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true)}
   )
 
@@ -41,7 +42,8 @@ object Learn extends Build {
   ).enablePlugins(PlayScala)
 
   lazy val testing = (project in (subprojects / "testing")).settings(commonSettings: _*).settings(
-    libraryDependencies ++= Seq( // TODO add scalacheck and scalatest
+    libraryDependencies ++= Seq( // TODO add scalatest
+      "org.specs2" %% "specs2-scalacheck" % specsVersion % "test"
     )
   ) //.dependsOn(shared)
 
