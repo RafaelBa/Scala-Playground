@@ -45,7 +45,7 @@ object Learn extends Build {
     libraryDependencies ++= Seq( // TODO add scalatest
       "org.specs2" %% "specs2-scalacheck" % specsVersion % "test"
     )
-  ) //.dependsOn(shared)
+  ) //.dependsOn(shared)   // TODO activate HTML output https://etorreborre.github.io/specs2/guide/SPECS2-3.5/org.specs2.guide.HtmlOutput.html
 
   // lazy val shared = (project in (subprojects / "shared"))
 
