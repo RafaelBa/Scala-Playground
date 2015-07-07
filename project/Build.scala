@@ -7,7 +7,7 @@ object Learn extends Build {
   override lazy val settings = super.settings ++ Seq(
     name := "LearningScala",
     version := "Alpha",
-    scalaVersion := "2.11.6",
+    scalaVersion := "2.11.7",
     resolvers := Seq(
       "spray repo" at "http://repo.spray.io",
       "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
