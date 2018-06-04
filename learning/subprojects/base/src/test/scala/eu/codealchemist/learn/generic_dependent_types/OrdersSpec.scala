@@ -4,7 +4,7 @@ import org.specs2.Specification
 import PriceCalculatorResolver._
 import Transformer._
 
-class OrdersSpec extends Specification { def is = 
+class OrdersSpec extends Specification { def is =
   "Generic Dependent Types".title ^ s2"""
 The goal is here to glue together some types that can never be mixed. But the original top class is generic.
 So imagine you work with orders of contracts for different verticals. Here it is telecommunication and energy providers.

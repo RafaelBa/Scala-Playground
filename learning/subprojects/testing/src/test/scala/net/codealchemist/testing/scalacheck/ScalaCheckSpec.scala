@@ -55,28 +55,28 @@ ScalaCheck gives you the possibility to create values with restrictions for all 
 
   case class Coordinates(cs: List[Coordinate]) {
     override def toString =
-      if (cs.size == 0) ""
+      if (cs.isEmpty) ""
       else cs.tail.foldLeft(cs.head.toString)((s: String, c: Coordinate) => s"$s -> ${c.toString}")
   }
 
   lazy val xGen: Gen[X] = Arbitrary.arbInt.arbitrary.map(X(_))
-  implicit lazy val xArb = Arbitrary(xGen)
+  implicit lazy val xArb: Arbitrary[X] = Arbitrary(xGen)
 
   lazy val yGen: Gen[Y] = Arbitrary.arbInt.arbitrary.map(Y(_))
-  implicit lazy val yArb = Arbitrary(yGen)
+  implicit lazy val yArb: Arbitrary[Y] = Arbitrary(yGen)
 
   implicit lazy val coordinateGen = for {
     x <- xGen
     y <- yGen
   } yield Coordinate(x, y)
 
-  implicit lazy val coordinateArb = Arbitrary(coordinateGen)
+  implicit lazy val coordinateArb: Arbitrary[Coordinate] = Arbitrary(coordinateGen)
 
-  lazy val coordinateListGen = for {
-    cs <- Arbitrary.arbitrary[List[Coordinate]] suchThat (! _.isEmpty)
+  lazy val coordinateListGen: Gen[Coordinates] = for {
+    cs <- Arbitrary.arbitrary[List[Coordinate]] suchThat (_.nonEmpty)
   } yield Coordinates(cs)
 
-  implicit lazy val coordinateListArb = Arbitrary(coordinateListGen)
+  implicit lazy val coordinateListArb: Arbitrary[Coordinates] = Arbitrary(coordinateListGen)
 
   lazy val greaterTwoGen = for {
     n <- Arbitrary.arbInt.arbitrary if (n > 2)

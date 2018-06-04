@@ -3,6 +3,8 @@ package eu.codealchemist.testing.specs
 import org.specs2.Specification
 import org.specs2.specification.Tables
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class DatatablesSpec extends Specification with Tables { def is = "Datatables".title ^ s2"""
 Datatables are a quiet easy way to test your algorithms against multiple data.
 

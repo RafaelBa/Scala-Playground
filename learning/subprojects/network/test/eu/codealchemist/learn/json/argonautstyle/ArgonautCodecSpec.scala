@@ -4,7 +4,6 @@ package argonautstyle
 
 import argonaut.{CursorOpDownField, CursorOp, CursorHistory}
 import org.specs2.Specification
-import scalaz.{-\/, \/-}
 
 import Conversions._
 import Drinks._
@@ -35,31 +34,32 @@ class ArgonautCodecSpec extends Specification { def is =
 """
 
   def e1 = cocktailToJson(caipi) should beEqualTo(caipiJson)
-  def e2 = jsonToCocktail(caipiJson) should beEqualTo(\/-(caipi))
-  def e3 = jsonToCocktail(erronousCocktailJson) should beEqualTo(
-    -\/(\/-(
+  def e2 = jsonToCocktail(caipiJson) should beRight(caipi)
+  def e3 = jsonToCocktail(erronousCocktailJson) should beLeft(
+    beRight(
       ("Attempt to decode value on failed cursor.",
         CursorHistory(List(
           CursorOp.failedOp(CursorOpDownField("ingredients"))
         ))
       )
-    )))
+    )
+  )
 
   def e4 = drinkToJson(beer) should beEqualTo(beerJson) and( drinkToJson(wine) should beEqualTo(wineJson) )
   def e5 = jsonToDrink(beerJson) should beRight(beer) and( jsonToDrink(wineJson) should beRight(wine))
   def e6 = {
-    jsonToDrink(erronousDrinkJson) should beLeft("Attempt to decode value on failed cursor.: [*.--\\(kindOfWine)]")
+    jsonToDrink(erronousDrinkJson) should beLeft(contain("kindOfWine"))
   }
 
   def e7 = whiskyToJson(ardbeg) should beEqualTo(ardbegJson)
   def e8 = jsonToWhisky(ardbegJson) should beSome(ardbeg)
   def e9 = jsonToWhisky(erronousWhiskyJson) should beNone
 
-  def codecs = jsonToCocktail(cocktailToJson(caipi)) should beEqualTo(\/-(caipi)) and(
+  def codecs = jsonToCocktail(cocktailToJson(caipi)) should beRight(caipi) and(
     jsonToDrink(drinkToJson(beer)) should beRight(beer) and(
       jsonToDrink(drinkToJson(wine)) should beRight(wine) and(
         jsonToWhisky(whiskyToJson(ardbeg)) should beSome(ardbeg)
+        )
       )
     )
-  )
 }
