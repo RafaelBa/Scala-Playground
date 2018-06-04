@@ -1,4 +1,4 @@
-package net.codealchemist.testing.specs
+package eu.codealchemist.testing.specs
 
 import org.specs2.Specification
 import subspec._

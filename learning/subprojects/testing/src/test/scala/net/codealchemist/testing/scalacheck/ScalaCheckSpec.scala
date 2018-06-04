@@ -1,4 +1,4 @@
-package net.codealchemist.testing.scalacheck
+package eu.codealchemist.testing.scalacheck
 
 import org.scalacheck.{Gen, Arbitrary}
 import org.specs2.{Specification, ScalaCheck}

@@ -1,4 +1,4 @@
-package net.codealchemist.testing.specs
+package eu.codealchemist.testing.specs
 
 import scala.util.Try
 import org.specs2.Specification
@@ -88,7 +88,7 @@ Specs2 comes with some ready to use matchers, and this here shows how to actuall
 
   object L {
     lazy val l = List(2, 3, 4)
-    
+
     def size = l should have size(3)
     def allOf = l should contain(4, 3)
     def oneOf = l should contain(beOneOf(2, 3, 4, 5)).forall
