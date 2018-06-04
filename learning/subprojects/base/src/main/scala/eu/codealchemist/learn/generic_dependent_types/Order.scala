@@ -1,36 +1,18 @@
-package eu.codealchemist.learn.generics.generic_dependet_types
+package eu.codealchemist.learn.generic_dependent_types
 
+/**
+  * We here simply say that this order has some kind of specific type of 'Vertical'.
+  * The fields inside this case class are affected by this, as 'verticalData' is of whatever type is defined
+  * inside of the parameter type we pass.
+  * Even more, we pass the parameter also to 'Rate', where rate pics the types it needs for its fields,
+  * depending on the type we passed in the type parameter.
+  */
 case class Order[V <: Vertical](
   userId: Long,
-  recommendation: Rate[V],
+  rate: Rate[V],
   verticalData: V#OrderData
-) /*{
-  def toVertical[OtherVertical <: OrderVertical](
-    implicit t: Transformation[Order[Vertical], Order[OtherVertical]]
-  ): Order[OtherVertical] = t(this)
-
-  def toJson(implicit formats: OrderFormat[Vertical]): JsValue = Json.toJson(this)(formats.orderFormat)
-}
-
-object Order
-{
-  def transformVertical[T <: Vertical, U <: Vertical](
-    order: Order[T]
-  )(implicit
-    orderDataTransformation: Transformation[T#OrderData, U#OrderData],
-    rateTransformation: Transformation[Rate[T], Rate[U]]
-  ): Order[U] = {
-    val fromGen = LabelledGeneric[Order[T]]
-    val toGen = LabelledGeneric[Order[U]]
-
-    val fromFields = fromGen.to(order)
-
-    val up = fromFields
-      .updateWith('custom_data)(customDataTransformation(_))
-      .updateWith('service_provider_to_service_category_mapping)(providerCategoryMappingTransformation(_))
-      .updateWith('rate)(rateTransformation(_))
-
-    toGen.from(up)
+) {
+  def transform[V2 <: Vertical](implicit transformer: Transformer[Order[V], Order[V2]]): Order[V2] = {
+    transformer(this)
   }
 }
-*/

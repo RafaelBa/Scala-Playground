@@ -1,4 +1,4 @@
-package eu.codealchemist.learn.generics.generic_dependet_types
+package eu.codealchemist.learn.generic_dependent_types
 
 sealed trait Vertical {
   type OrderData

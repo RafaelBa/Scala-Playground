@@ -1,4 +1,4 @@
-package eu.codealchemist.learn.generics.generic_dependet_types.telco
+package eu.codealchemist.learn.generic_dependent_types.telco
 
 case class OrderData(
   personalIdNumber: String,

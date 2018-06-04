@@ -1,4 +1,4 @@
-package eu.codealchemist.learn.generics.generic_dependet_types.energy
+package eu.codealchemist.learn.generic_dependent_types.energy
 
 case class OrderData(
   meter_number: String,
