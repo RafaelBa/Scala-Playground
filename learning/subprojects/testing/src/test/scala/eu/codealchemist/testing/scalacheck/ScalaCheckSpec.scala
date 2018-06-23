@@ -1,7 +1,7 @@
 package eu.codealchemist.testing.scalacheck
 
-import org.scalacheck.{Gen, Arbitrary}
-import org.specs2.{Specification, ScalaCheck}
+import org.scalacheck.{Arbitrary, Gen}
+import org.specs2.{ScalaCheck, Specification}
 
 class ScalaCheckSpec extends Specification with ScalaCheck { def is =
 "ScalaCheck".title ^ s2"""
